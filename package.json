@@ -1,0 +1,41 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "watch": {
+    "watch-all": {
+      "patterns": [
+        "src"
+      ],
+      "extensions": "html,css,svg,js"
+    }
+  },
+  "scripts": {
+    "clean-dist": "rm -rf dist",
+    "make-dirs": "mkdir dist && mkdir dist/css && mkdir dist/img && mkdir dist/js",
+    "bundle-js": "browserify src/js/main.js -o dist/js/bundle.js",
+    "copy-images": "cd src && find img/ -name '*' | cpio -pdm ../dist/ && cd ../",
+    "copy-html": "cd src && find ./ -name '*.html' | cpio -pdm ../dist/ && cd ../",
+    "postcss": "postcss src/css/main.css -o dist/css/style.css",
+    "build": "npm run clean-dist && npm run copy-html && npm run copy-images && npm run postcss && npm run bundle-js",
+    "watch-all": "npm run build",
+    "watch": "npm-watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jelleoverbeek/blog.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jelleoverbeek/blog/issues"
+  },
+  "homepage": "https://github.com/jelleoverbeek/blog#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "autoprefixer": "^8.6.3",
+    "npm-watch": "^0.3.0",
+    "postcss-preset-env": "^5.1.0"
+  }
+}
