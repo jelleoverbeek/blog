@@ -4,11 +4,23 @@
   "description": "",
   "main": "index.js",
   "watch": {
-    "watch-all": {
+    "watch-assets": {
       "patterns": [
         "src"
       ],
-      "extensions": "html,css,svg,js"
+      "extensions": "css,js"
+    },
+    "watch-html": {
+      "patterns": [
+        "src"
+      ],
+      "extensions": "html"
+    },
+    "watch-img": {
+      "patterns": [
+        "src/img/"
+      ],
+      "extensions": "svg,png,jpg,jpeg,gif"
     }
   },
   "scripts": {
@@ -18,8 +30,11 @@
     "copy-images": "cd src && find img/ -name '*' | cpio -pdm ../dist/ && cd ../",
     "copy-html": "cd src && find ./ -name '*.html' | cpio -pdm ../dist/ && cd ../",
     "postcss": "postcss src/css/main.css -o dist/css/style.css",
+    "build-assets": "npm run postcss && npm run bundle-js",
     "build": "npm run clean-dist && npm run copy-html && npm run copy-images && npm run postcss && npm run bundle-js",
-    "watch-all": "npm run build",
+    "watch-assets": "npm run build-assets",
+    "watch-html": "npm run copy-html",
+    "watch-img": "npm run copy-images",
     "watch": "npm-watch"
   },
   "repository": {
@@ -36,6 +51,7 @@
   "devDependencies": {
     "autoprefixer": "^8.6.3",
     "npm-watch": "^0.3.0",
+    "postcss-custom-selectors": "^4.0.1",
     "postcss-preset-env": "^5.1.0"
   }
 }

@@ -1,7 +1,22 @@
+@custom-selector :--headings h1, h2, h3, h4, h5, h6;
+
+:root {
+  --mainFont: system-ui, sans-serif;
+  --headerFont: system-ui, sans-serif;
+}
+
 body {
   margin: 0;
-  background: blue;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
+  font-family: var(--mainFont);
+}
+
+article {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+:--headings {
+  font-family: var(--headerFont);
+  color: red;
 }
