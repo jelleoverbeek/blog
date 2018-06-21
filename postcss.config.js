@@ -2,7 +2,9 @@
 module.exports = {
   map: true,
   plugins: {
-    "postcss-custom-selectors": {},
-    "postcss-preset-env": {}
+    "postcss-preset-env": {
+      stage: 0
+    },
+    "autoprefixer": {}
   }
 };
