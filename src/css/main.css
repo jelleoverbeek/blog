@@ -20,3 +20,7 @@ article {
   font-family: var(--headerFont);
   color: red;
 }
+
+p {
+  line-height: 1.5;
+}
