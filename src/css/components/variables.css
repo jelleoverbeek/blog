@@ -1,0 +1,16 @@
+@custom-selector :--headings h1, h2, h3, h4, h5, h6;
+@custom-selector :--codeBlocks pre, code;
+@custom-media --averageMobile (max-width: 31.25rem);
+
+:root {
+  --mainFont: "Roboto", system-ui, sans-serif;
+  --monoFont: "Roboto Mono", monospace;
+  --blue: rgb(87, 132, 255);
+  --blue-dark: color-mod(var(--blue) blackness(30%));
+  --black: rgb(49, 49, 49);
+  --gray: rgb(58, 69, 78);
+  --light-gray: #e1e1e1;
+  --lighter-gray: #e1e1e105;
+  --white: rgb(255, 255, 255);
+  --borderRadius: 0.2rem;
+}

@@ -12,222 +12,224 @@
 
 <body>
 
-  <nav>
-    <a href="index.html">Terug naar overzicht</a>
-  </nav>
+  <main>
+    <nav>
+      <a href="index.html" class="back">Terug naar overzicht</a>
+    </nav>
 
-  <article>
-    <h1>Trading in Gulp… or not?</h1>
-    <p>Voor lange tijd was ik een fan van Gulp, en nu nog steeds. Echter is het nooit slecht om eens nieuwe dingen uit te proberen
-      en ga ik in dit artikel jullie vertellen hoe het proces is om van Gulp naar NPM scripts over te stappen.</p>
-    <p>De reden is dat ik veel scripts moet installeren en deze vaak deprecated zijn. Veel mensen zeggen vervolgens: Webpack!.
-      Maar sinds ik een klein beetje kennis heb gemaakt met NPM scripts is het eigenlijk veel logischer om zoveel mogelijk
-      de native commando’s van het besturingssysteem te gebruiken.</p>
-    <p>Tijdens het schrijven van dit artikel heb ik als test de structuur van de blog waar u zich op bevindt opgebouwd met NPM
-      scripts. Als CSS gebruik ik PostCSS, ook voor het eerst, in
-      <em>dit andere artikel</em> kunt u lezen hoe dit mij is afgegaan.</p>
-    <p>Om te beginnen maak ik natuurlijk een nieuwe repo en voeg ik NPM toe. Ik werk meestal met een “src” map die gecompileerd
-      wordt naar een “dist” map. In dit project zal ik dit ook doen.</p>
+    <article>
+      <h1>Trading in Gulp… or not?</h1>
+      <p>Voor lange tijd was ik een fan van Gulp, en nu nog steeds. Echter is het nooit slecht om eens nieuwe dingen uit te
+        proberen en ga ik in dit artikel jullie vertellen hoe het proces is om van Gulp naar NPM scripts over te stappen.</p>
+      <p>De reden is dat ik veel scripts moet installeren en deze vaak deprecated zijn. Veel mensen zeggen vervolgens: Webpack!.
+        Maar sinds ik een klein beetje kennis heb gemaakt met NPM scripts is het eigenlijk veel logischer om zoveel mogelijk
+        de native commando’s van het besturingssysteem te gebruiken.</p>
+      <p>Tijdens het schrijven van dit artikel heb ik als test de structuur van de blog waar u zich op bevindt opgebouwd met
+        NPM scripts. Als CSS gebruik ik PostCSS, ook voor het eerst, in
+        <em>dit andere artikel</em> kunt u lezen hoe dit mij is afgegaan.</p>
+      <p>Om te beginnen maak ik natuurlijk een nieuwe repo en voeg ik NPM toe. Ik werk meestal met een “src” map die gecompileerd
+        wordt naar een “dist” map. In dit project zal ik dit ook doen.</p>
 
-    <h2>Basisstructuur</h2>
-    <p>Om mappen aan te maken en bestanden te kopiëren zijn geen NPM scripts nodig. Hiervoor kunnen we de
-      <code>mkdir</code> en
-      <code>cp</code> commando’s gebruiken.</p>
-    <p>Mijn niet gecompileerde structuur ziet er in dit project er als volgt uit:</p>
-    <pre><code class='language-bash' lang='bash'>src/
-      ├── css
-      │   └── main.css
-      ├── img
-      │   └── sketchnotes.jpg
-      ├── js
-      │   └── main.js
-      ├── article.html
-      └── index.html
-      </code></pre>
+      <h2>Basisstructuur</h2>
+      <p>Om mappen aan te maken en bestanden te kopiëren zijn geen NPM scripts nodig. Hiervoor kunnen we de
+        <code>mkdir</code> en
+        <code>cp</code> commando’s gebruiken.</p>
+      <p>Mijn niet gecompileerde structuur ziet er in dit project er als volgt uit:</p>
+      <pre><code class='language-bash' lang='bash'>src/
+            ├── css
+            │   └── main.css
+            ├── img
+            │   └── sketchnotes.jpg
+            ├── js
+            │   └── main.js
+            ├── article.html
+            └── index.html
+            </code></pre>
 
-    <h2>Mappen aanmaken</h2>
-    <p>Om te beginnen heb ik een npm script aangemaakt die de folderstructuur aanmaakte en een script die de HTML, PNG, SVG
-      en JPG bestanden kopieerde.</p>
-    <pre><code class='language-bash' lang='bash'># make folders
-      mkdir dist &amp;&amp; mkdir dist/css &amp;&amp; mkdir dist/img &amp;&amp; mkdir dist/js
-      </code></pre>
-    <pre><code class='language-bash' lang='bash'># copy files
-      cp src/*.html src/img/*.png src/img/*.svg src/img/*.jpg dist
-      </code></pre>
-    <p>Het probleem met deze scripts zou zijn dat ik handmatig alle subfolders van bijvoorbeeld de img folder zou moeten kopieren
-      en toevoegen aan het script. Dit leek mij niet handig voor een groter project met veel folders. Dus ik ben opzoek gegaan
-      naar een manier om een bestand te kopieren maar ook het pad naar het bestand mee te nemen.</p>
-    <p>Om dit te testen heb ik subfolders toegevoegd aan de bestandstructuur:</p>
-    <pre><code class='language-bash' lang='bash'>src/
-      ├── css
-      │   └── main.css
-      ├── img
-      │   ├── icons
-      │   │   └── icon.svg
-      │   └── sketchnotes
-      │       └── sketchnotes.jpg
-      ├── js
-      │   └── main.js
-      ├── article.html
-      └── index.html
-      </code></pre>
-    <p>Op het internet vond ik
-      <a href='https://unix.stackexchange.com/questions/83593/copy-specific-file-type-keeping-the-folder-structure'>deze antwoorden</a>, op basis hiervan ben ik het commando gaan schrijven voor mijn project. Hier kwamen de volgende
-      commando&#39;s uit:
-    </p>
-    <pre><code class='language-bash' lang='bash'>#copy all files including the img folder
-      cd src &amp;&amp; find img/ -name &#39;*&#39; | cpio -pdm ../dist/ &amp;&amp; cd ../
-    
-      #copy all .html files in src folder
-      cd src &amp;&amp; find ./ -name &#39;*.html&#39; | cpio -pdm ../dist/ &amp;&amp; cd ../
-      </code></pre>
-    <p>Ik ga eerst de src folder in met
-      <code>cd src</code> omdat het
-      <code>cpio</code> commando deze anders ook kopieerd. Vanuit daar zoek ik naar alle bestanden binnen de
-      <code>img/</code> folder met het
-      <code>find</code> commando. Ik zoek niet naar specifieke bestandsformaten maar kopieer ze allemaal. Bij het 2e commando doe ik dit wel,
-      daar zoek ik specifiek naar .html bestanden. Vervolgens zorgt het
-      <code>cpio</code> commando er voor dat de bestanden inclusief het pad gekopieerd worden naar de dist folder.</p>
+      <h2>Mappen aanmaken</h2>
+      <p>Om te beginnen heb ik een npm script aangemaakt die de folderstructuur aanmaakte en een script die de HTML, PNG, SVG
+        en JPG bestanden kopieerde.</p>
+      <pre><code class='language-bash' lang='bash'># make folders
+            mkdir dist &amp;&amp; mkdir dist/css &amp;&amp; mkdir dist/img &amp;&amp; mkdir dist/js
+            </code></pre>
+      <pre><code class='language-bash' lang='bash'># copy files
+            cp src/*.html src/img/*.png src/img/*.svg src/img/*.jpg dist
+            </code></pre>
+      <p>Het probleem met deze scripts zou zijn dat ik handmatig alle subfolders van bijvoorbeeld de img folder zou moeten kopieren
+        en toevoegen aan het script. Dit leek mij niet handig voor een groter project met veel folders. Dus ik ben opzoek
+        gegaan naar een manier om een bestand te kopieren maar ook het pad naar het bestand mee te nemen.</p>
+      <p>Om dit te testen heb ik subfolders toegevoegd aan de bestandstructuur:</p>
+      <pre><code class='language-bash' lang='bash'>src/
+            ├── css
+            │   └── main.css
+            ├── img
+            │   ├── icons
+            │   │   └── icon.svg
+            │   └── sketchnotes
+            │       └── sketchnotes.jpg
+            ├── js
+            │   └── main.js
+            ├── article.html
+            └── index.html
+            </code></pre>
+      <p>Op het internet vond ik
+        <a href='https://unix.stackexchange.com/questions/83593/copy-specific-file-type-keeping-the-folder-structure'>deze antwoorden</a>, op basis hiervan ben ik het commando gaan schrijven voor mijn project. Hier kwamen de volgende
+        commando&#39;s uit:
+      </p>
+      <pre><code class='language-bash' lang='bash'>#copy all files including the img folder
+            cd src &amp;&amp; find img/ -name &#39;*&#39; | cpio -pdm ../dist/ &amp;&amp; cd ../
+          
+            #copy all .html files in src folder
+            cd src &amp;&amp; find ./ -name &#39;*.html&#39; | cpio -pdm ../dist/ &amp;&amp; cd ../
+            </code></pre>
+      <p>Ik ga eerst de src folder in met
+        <code>cd src</code> omdat het
+        <code>cpio</code> commando deze anders ook kopieerd. Vanuit daar zoek ik naar alle bestanden binnen de
+        <code>img/</code> folder met het
+        <code>find</code> commando. Ik zoek niet naar specifieke bestandsformaten maar kopieer ze allemaal. Bij het 2e commando doe ik dit
+        wel, daar zoek ik specifiek naar .html bestanden. Vervolgens zorgt het
+        <code>cpio</code> commando er voor dat de bestanden inclusief het pad gekopieerd worden naar de dist folder.</p>
 
-    <h2>De
-      <code>dist</code> map opschonen</h2>
-    <p>Voordat ik bestanden vanuit
-      <code>dist</code> kopieer of vind ik het altijd fijn om de hele dist folder weg te gooien. Op deze manier blijven er geen onnodige bestanden
-      achter. Met het
-      <code>rm -rf dist</code> commando is dit een koud kunstje.</p>
+      <h2>De
+        <code>dist</code> map opschonen</h2>
+      <p>Voordat ik bestanden vanuit
+        <code>dist</code> kopieer of vind ik het altijd fijn om de hele dist folder weg te gooien. Op deze manier blijven er geen onnodige
+        bestanden achter. Met het
+        <code>rm -rf dist</code> commando is dit een koud kunstje.</p>
 
-    <h2>Browserify</h2>
-    <p>Browserify is een tool om JavaScript bestanden te bundelen. Het is met Browserify mogelijk om JavaScript bestanden te
-      bundelen alsof het Node modules zijn. Browserify moet global geinstalleerd worden. Dus met de
-      <code>require()</code> methode. Mijn huidige JavaScript structuur ziet er als volgt uit:</p>
-    <pre><code class='language-bash' lang='bash'>js/
-      ├── animation.js
-      ├── main.js
-      └── slider.js
-      </code></pre>
-    <p>In
-      <code>main.js</code> geef ik aan dat ik
-      <code>animation.js</code> en
-      <code>slider.js</code> wil bundelen door ze te aan te roepen met de
-      <code>require()</code> functie. Dat ziet er als volgt uit:</p>
-    <pre><code class='language-javascript' lang='javascript'>// main.js
-      const animation = require(&quot;./animation&quot;);
-      const slider = require(&quot;./slider&quot;);
-      </code></pre>
-    <p>Wanneer ik nu het het onderstaande commando run zal zullen deze bestanden samengevoegd worden in een bestand genaamd
-      <code>bundle.js</code>.</p>
-    <pre><code class='language-bash' lang='bash'>browserify src/js/main.js -o dist/js/bundle.js
-      </code></pre>
+      <h2>Browserify</h2>
+      <p>Browserify is een tool om JavaScript bestanden te bundelen. Het is met Browserify mogelijk om JavaScript bestanden
+        te bundelen alsof het Node modules zijn. Browserify moet global geinstalleerd worden. Dus met de
+        <code>require()</code> methode. Mijn huidige JavaScript structuur ziet er als volgt uit:</p>
+      <pre><code class='language-bash' lang='bash'>js/
+            ├── animation.js
+            ├── main.js
+            └── slider.js
+            </code></pre>
+      <p>In
+        <code>main.js</code> geef ik aan dat ik
+        <code>animation.js</code> en
+        <code>slider.js</code> wil bundelen door ze te aan te roepen met de
+        <code>require()</code> functie. Dat ziet er als volgt uit:</p>
+      <pre><code class='language-javascript' lang='javascript'>// main.js
+            const animation = require(&quot;./animation&quot;);
+            const slider = require(&quot;./slider&quot;);
+            </code></pre>
+      <p>Wanneer ik nu het het onderstaande commando run zal zullen deze bestanden samengevoegd worden in een bestand genaamd
+        <code>bundle.js</code>.</p>
+      <pre><code class='language-bash' lang='bash'>browserify src/js/main.js -o dist/js/bundle.js
+            </code></pre>
 
-    <h2>PostCSS</h2>
-    <p>Normaal gesproken gebruik ik SASS bij het bouwen van websites. Bij dit project heb ik er voor gekozen om PostCSS eens
-      te onderzoeken. In
-      <a href='#'>dit artikel</a> kun je de bevindingen daarvan lezen. PostCSS is een tool waarmee futuristische CSS gecompileerd wordt
-      naar CSS die door de wat oudere browsers ook gelezen kan worden.</p>
-    <p>Omdat ik dit project zo veel mogelijk met npm scripts wil werken gebruik ik de
-      <a href='https://github.com/postcss/postcss-cli'>command line versie</a> van PostCSS. Het commando is er als volgt uit komen te zien:</p>
-    <pre><code class='language-bash' lang='bash'># compile
-      postcss src/css/main.css -o dist/css/style.css
-      </code></pre>
-    <p>Om een zo groot mogelijke support te leveren aan alle browsers wil ik de
-      <a href='https://www.npmjs.com/package/autoprefixer'>autoprefixer</a> en de
-      <a href='https://preset-env.cssdb.org/'>postcss-preset-env</a> plugins toevoegen aan PostCSS. Dit heb ik gedaan door een
-      <code>postcss.config.js</code> bestand aan te maken en er de volgende configuratie in te plaatsen:</p>
-    <pre><code class='language-javascript' lang='javascript'>// postcss.config.js
-      module.exports = {
-        map: true,
-        plugins: {
-          &quot;postcss-preset-env&quot;: {},
-          autoprefixer: {}
-        }
-      };
-      </code></pre>
-    <p>Het
-      <code>postcss.config.js</code> wordt standaard uitgelezen door PostCSS. Om
-      <a href='https://www.npmjs.com/package/autoprefixer'>autoprefixer</a> en
-      <a href='https://preset-env.cssdb.org/'>postcss-preset-env</a> via de command line te gebruiken moest ik deze plugins global installeren.</p>
+      <h2>PostCSS</h2>
+      <p>Normaal gesproken gebruik ik SASS bij het bouwen van websites. Bij dit project heb ik er voor gekozen om PostCSS eens
+        te onderzoeken. In
+        <a href='#'>dit artikel</a> kun je de bevindingen daarvan lezen. PostCSS is een tool waarmee futuristische CSS gecompileerd wordt
+        naar CSS die door de wat oudere browsers ook gelezen kan worden.</p>
+      <p>Omdat ik dit project zo veel mogelijk met npm scripts wil werken gebruik ik de
+        <a href='https://github.com/postcss/postcss-cli'>command line versie</a> van PostCSS. Het commando is er als volgt uit komen te zien:</p>
+      <pre><code class='language-bash' lang='bash'># compile
+            postcss src/css/main.css -o dist/css/style.css
+            </code></pre>
+      <p>Om een zo groot mogelijke support te leveren aan alle browsers wil ik de
+        <a href='https://www.npmjs.com/package/autoprefixer'>autoprefixer</a> en de
+        <a href='https://preset-env.cssdb.org/'>postcss-preset-env</a> plugins toevoegen aan PostCSS. Dit heb ik gedaan door een
+        <code>postcss.config.js</code> bestand aan te maken en er de volgende configuratie in te plaatsen:</p>
+      <pre><code class='language-javascript' lang='javascript'>// postcss.config.js
+            module.exports = {
+              map: true,
+              plugins: {
+                &quot;postcss-preset-env&quot;: {},
+                autoprefixer: {}
+              }
+            };
+            </code></pre>
+      <p>Het
+        <code>postcss.config.js</code> wordt standaard uitgelezen door PostCSS. Om
+        <a href='https://www.npmjs.com/package/autoprefixer'>autoprefixer</a> en
+        <a href='https://preset-env.cssdb.org/'>postcss-preset-env</a> via de command line te gebruiken moest ik deze plugins global installeren.</p>
 
-    <h2>Toevoegen van alle commando&#39;s aan NPM.</h2>
-    <p>Nu ik alle losse commando&#39;s heb voeg ik deze allemaal toe aan de
-      <code>package.json</code> van het project. Het scripts object ziet er nu als volgt uit. Als laatste commando heb ik
-      <code>build</code> toegevoegd. Dit commando zal alle npm scripts opeenvolgend draaien.</p>
-    <pre><code class='language-json' lang='json'>&quot;scripts&quot;: {
-          // remove dist folder and all childs
-          &quot;clean-dist&quot;: &quot;rm -rf dist&quot;,
-          // Create directories
-          &quot;make-dirs&quot;: &quot;mkdir dist &amp;&amp; mkdir dist/css &amp;&amp; mkdir dist/img &amp;&amp; mkdir dist/js&quot;,
-          // Copy images
-          &quot;copy-images&quot;: &quot;cd src &amp;&amp; find img/ -name &#39;*&#39; | cpio -pdm ../dist/ &amp;&amp; cd ../&quot;,
-          // Bundle js files using Browserify
-          &quot;bundle-js&quot;: &quot;browserify src/js/main.js -o dist/js/bundle.js&quot;,
-          // Copy html files
-          &quot;copy-html&quot;: &quot;cd src &amp;&amp; find ./ -name &#39;*.html&#39; | cpio -pdm ../dist/ &amp;&amp; cd ../&quot;,
-          // Compile futuristic CSS to normal one with PostCSS
-          &quot;postcss&quot;: &quot;postcss src/css/main.css --use -o dist/css/style.css&quot;,
-          // Run all the scripts
-        &quot;build&quot;: &quot;npm run clean-dist &amp;&amp; npm run copy-html &amp;&amp; npm run copy-images &amp;&amp; npm run postcss &amp;&amp; npm run bundle-js&quot;,
-      }
-      </code></pre>
-    <p>Bovenstaande commando&#39;s worden uitgevoerd met het het
-      <code>npm run &lt;command&gt;</code> commando. het
-      <code>build</code> commando wordt dus uitgevoerd door
-      <code>npm run build</code> in de terminal te typen.</p>
-    <h2>Watcher</h2>
-    <p>De voornaamste reden waarom ik gulp gebruikte was voor het makkelijk instellen van een watcher. Voorat ik begon met het
-      schrijven van dit artikel had ik nog geen idee hoe ik een watcher zou moeten installeren via npm scripts. Uiteraard
-      was ik hier ook een npm package voor beschikbaar met de naam
-      <a href='https://www.npmjs.com/package/npm-watch'>npm-watch</a>.</p>
-    <p>Standaard houd npm-watch alleen
-      <code>.js</code>,
-      <code>.coffee</code> en
-      <code>.litcoffee</code> bestanden in de gaten. Dit kun je natuurlijk configureren. In mijn project is het belangrijkste dat
-      <code>.html</code>,
-      <code>.css</code>,
-      <code>.svg</code>en
-      <code>.js</code> bestanden in de gaten worden gehouden. Uiteindelijk heb ik dit toegevoegd aan mijn
-      <code>package.json</code>. Zodra een van de bestanden met de net genoemde extensies gewijzigd zou worden in de
-      <code>src</code> map zou het hele
-      <code>build</code> commando opnieuw gedraaid worden.</p>
-    <pre><code class='language-json' lang='json'>  &quot;watch&quot;: {
-          &quot;watch-all&quot;: {
-            &quot;patterns&quot;: [
-              &quot;src&quot;
-            ],
-            &quot;extensions&quot;: &quot;html,css,svg,js&quot;
-          }
-        },
-        &quot;scripts&quot;: {
-          &quot;clean-dist&quot;: &quot;rm -rf dist&quot;,
-          &quot;make-dirs&quot;: &quot;mkdir dist &amp;&amp; mkdir dist/css &amp;&amp; mkdir dist/img &amp;&amp; mkdir dist/js&quot;,
-          &quot;bundle-js&quot;: &quot;browserify src/js/main.js -o dist/js/bundle.js&quot;,
-          &quot;copy-images&quot;: &quot;cd src &amp;&amp; find img/ -name &#39;*&#39; | cpio -pdm ../dist/ &amp;&amp; cd ../&quot;,
-          &quot;copy-html&quot;: &quot;cd src &amp;&amp; find ./ -name &#39;*.html&#39; | cpio -pdm ../dist/ &amp;&amp; cd ../&quot;,
-          &quot;postcss&quot;: &quot;postcss src/css/main.css -o dist/css/style.css&quot;,
-          &quot;build&quot;: &quot;npm run clean-dist &amp;&amp; npm run copy-html &amp;&amp; npm run copy-images &amp;&amp; npm run postcss &amp;&amp; npm run bundle-js&quot;,
-          &quot;watch-all&quot;: &quot;npm run build&quot;,
-          &quot;watch&quot;: &quot;npm-watch&quot;
-        }
-      </code></pre>
+      <h2>Toevoegen van alle commando&#39;s aan NPM.</h2>
+      <p>Nu ik alle losse commando&#39;s heb voeg ik deze allemaal toe aan de
+        <code>package.json</code> van het project. Het scripts object ziet er nu als volgt uit. Als laatste commando heb ik
+        <code>build</code> toegevoegd. Dit commando zal alle npm scripts opeenvolgend draaien.</p>
+      <pre><code class='language-json' lang='json'>&quot;scripts&quot;: {
+                // remove dist folder and all childs
+                &quot;clean-dist&quot;: &quot;rm -rf dist&quot;,
+                // Create directories
+                &quot;make-dirs&quot;: &quot;mkdir dist &amp;&amp; mkdir dist/css &amp;&amp; mkdir dist/img &amp;&amp; mkdir dist/js&quot;,
+                // Copy images
+                &quot;copy-images&quot;: &quot;cd src &amp;&amp; find img/ -name &#39;*&#39; | cpio -pdm ../dist/ &amp;&amp; cd ../&quot;,
+                // Bundle js files using Browserify
+                &quot;bundle-js&quot;: &quot;browserify src/js/main.js -o dist/js/bundle.js&quot;,
+                // Copy html files
+                &quot;copy-html&quot;: &quot;cd src &amp;&amp; find ./ -name &#39;*.html&#39; | cpio -pdm ../dist/ &amp;&amp; cd ../&quot;,
+                // Compile futuristic CSS to normal one with PostCSS
+                &quot;postcss&quot;: &quot;postcss src/css/main.css --use -o dist/css/style.css&quot;,
+                // Run all the scripts
+              &quot;build&quot;: &quot;npm run clean-dist &amp;&amp; npm run copy-html &amp;&amp; npm run copy-images &amp;&amp; npm run postcss &amp;&amp; npm run bundle-js&quot;,
+            }
+            </code></pre>
+      <p>Bovenstaande commando&#39;s worden uitgevoerd met het het
+        <code>npm run &lt;command&gt;</code> commando. het
+        <code>build</code> commando wordt dus uitgevoerd door
+        <code>npm run build</code> in de terminal te typen.</p>
+      <h2>Watcher</h2>
+      <p>De voornaamste reden waarom ik gulp gebruikte was voor het makkelijk instellen van een watcher. Voorat ik begon met
+        het schrijven van dit artikel had ik nog geen idee hoe ik een watcher zou moeten installeren via npm scripts. Uiteraard
+        was ik hier ook een npm package voor beschikbaar met de naam
+        <a href='https://www.npmjs.com/package/npm-watch'>npm-watch</a>.</p>
+      <p>Standaard houd npm-watch alleen
+        <code>.js</code>,
+        <code>.coffee</code> en
+        <code>.litcoffee</code> bestanden in de gaten. Dit kun je natuurlijk configureren. In mijn project is het belangrijkste dat
+        <code>.html</code>,
+        <code>.css</code>,
+        <code>.svg</code>en
+        <code>.js</code> bestanden in de gaten worden gehouden. Uiteindelijk heb ik dit toegevoegd aan mijn
+        <code>package.json</code>. Zodra een van de bestanden met de net genoemde extensies gewijzigd zou worden in de
+        <code>src</code> map zou het hele
+        <code>build</code> commando opnieuw gedraaid worden.</p>
+      <pre><code class='language-json' lang='json'>  &quot;watch&quot;: {
+                &quot;watch-all&quot;: {
+                  &quot;patterns&quot;: [
+                    &quot;src&quot;
+                  ],
+                  &quot;extensions&quot;: &quot;html,css,svg,js&quot;
+                }
+              },
+              &quot;scripts&quot;: {
+                &quot;clean-dist&quot;: &quot;rm -rf dist&quot;,
+                &quot;make-dirs&quot;: &quot;mkdir dist &amp;&amp; mkdir dist/css &amp;&amp; mkdir dist/img &amp;&amp; mkdir dist/js&quot;,
+                &quot;bundle-js&quot;: &quot;browserify src/js/main.js -o dist/js/bundle.js&quot;,
+                &quot;copy-images&quot;: &quot;cd src &amp;&amp; find img/ -name &#39;*&#39; | cpio -pdm ../dist/ &amp;&amp; cd ../&quot;,
+                &quot;copy-html&quot;: &quot;cd src &amp;&amp; find ./ -name &#39;*.html&#39; | cpio -pdm ../dist/ &amp;&amp; cd ../&quot;,
+                &quot;postcss&quot;: &quot;postcss src/css/main.css -o dist/css/style.css&quot;,
+                &quot;build&quot;: &quot;npm run clean-dist &amp;&amp; npm run copy-html &amp;&amp; npm run copy-images &amp;&amp; npm run postcss &amp;&amp; npm run bundle-js&quot;,
+                &quot;watch-all&quot;: &quot;npm run build&quot;,
+                &quot;watch&quot;: &quot;npm-watch&quot;
+              }
+            </code></pre>
 
-    <h2>Conclusie</h2>
-    <p>Tegen mijn verwachtingen in is het compilen van de blog niet zo snel als ik had verwacht. Vooral het watchen gaat minder
-      snel dan ik had verwacht. </p>
+      <h2>Conclusie</h2>
+      <p>Tegen mijn verwachtingen in is het compilen van de blog niet zo snel als ik had verwacht. Vooral het watchen gaat minder
+        snel dan ik had verwacht. </p>
 
-    <h2>Bronnen</h2>
-    <ul>
-      <li>
-        <a href='https://preset-env.cssdb.org/' target='_blank' class='url'>https://preset-env.cssdb.org/</a>
-      </li>
-      <li>
-        <a href='https://www.npmjs.com/package/npm-watch' target='_blank' class='url'>https://www.npmjs.com/package/npm-watch</a>
-      </li>
-      <li>
-        <a href='https://unix.stackexchange.com/questions/83593/copy-specific-file-type-keeping-the-folder-structure' target='_blank'
-          class='url'>https://unix.stackexchange.com/questions/83593/copy-specific-file-type-keeping-the-folder-structure</a>
-      </li>
+      <h2>Bronnen</h2>
+      <ul>
+        <li>
+          <a href='https://preset-env.cssdb.org/' target='_blank' class='url'>https://preset-env.cssdb.org/</a>
+        </li>
+        <li>
+          <a href='https://www.npmjs.com/package/npm-watch' target='_blank' class='url'>https://www.npmjs.com/package/npm-watch</a>
+        </li>
+        <li>
+          <a href='https://unix.stackexchange.com/questions/83593/copy-specific-file-type-keeping-the-folder-structure' target='_blank'
+            class='url'>https://unix.stackexchange.com/questions/83593/copy-specific-file-type-keeping-the-folder-structure</a>
+        </li>
 
-    </ul>
-  </article>
+      </ul>
+    </article>
+  </main>
 
 </body>
 

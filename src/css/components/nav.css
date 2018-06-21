@@ -1,0 +1,32 @@
+nav {
+  font-size: 1.5rem;
+  padding: 4rem 0;
+
+  & ol {
+    padding-left: 1.5rem;
+  }
+}
+
+h1 + nav {
+  padding-top: 0;
+}
+
+.back {
+  display: flex;
+  align-items: center;
+
+  &:before {
+    content: " ";
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 0.5rem;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: contain;
+    background-image: image-set(
+      "../img/icons/chevron@1x.svg" 1x,
+      "../img/icons/chevron@2x.svg" 2x
+    );
+  }
+}
