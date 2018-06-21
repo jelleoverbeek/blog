@@ -4,12 +4,6 @@
   "description": "",
   "main": "index.js",
   "watch": {
-    "watch-assets": {
-      "patterns": [
-        "src"
-      ],
-      "extensions": "css,js"
-    },
     "watch-html": {
       "patterns": [
         "src"
@@ -32,9 +26,7 @@
     "copy-html": "cd src && find ./ -name '*.html' | cpio -pdm ../dist/ && cd ../",
     "postcss": "postcss src/css/main.css -o dist/css/style.css",
     "postcss-watch": "postcss src/css/main.css -o dist/css/style.css --watch",
-    "build-assets": "npm run postcss && npm run bundle-js",
     "build": "npm run clean-dist && npm run copy-html && npm run copy-images && npm run postcss && npm run bundle-js",
-    "watch-assets": "npm run build-assets",
     "watch-html": "npm run copy-html",
     "watch-img": "npm run copy-images",
     "watch": "npm-watch"
