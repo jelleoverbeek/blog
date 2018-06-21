@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:400,500,700" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <main>
+    <nav>
+      <a href="index.html" class="back">Terug naar overzicht</a>
+    </nav>
+
+    <article>
+      <h1>PostCSS</h1>
+      <p>Waar ik vroeger LESS als eerste installeerde in combinatie met 9545,8 andere tools om dit te compilen is dat tegenwoordig
+        SASS geworden. Bij elk project installeer ik de taal zowat als eerste. Bij ons op kantoor, en bij veel andere bedrijven,
+        is dit ook de standaard. Dit terwijl er met CSS-Next veel van de SASS functionaliteit overbodig is geworden. PostCSS
+        biedt ons de mogelijkheid futuristische CSS te schrijven en deze te compilen naar CSS die nog wel bruikbaar is in
+        hedendaagse browsers.</p>
+      <p>In dit artikel ga ik onderzoeken of het tijd is om SASS te vervangen met PostCSS. Het is de eerste keer dat ik gebruik
+        maak van PostCSS en ga er dus onervaren in. Een mooie test om te kijken hoe lastig het is om over te stappen.</p>
+
+      <h2>Opzetten</h2>
+      <p>Voor dit project gebruik ik NPM en PostCSS in combinatie met NPM scripts. Het gebruiken van enkel NPM scripts is ook
+        nieuw voor mij. In een ander artikel ga ik hier op in. Ik ga de blog vormgeven waar u zich nu op bevindt.</p>
+      <p>Tijdens het opzetten van PostCSS kwam ik er achter dat het met de CLI soms wat lastig te volgen is omdat de meeste
+        voorbeelden i.c.m. Gulp of Webpack zijn. Wanneer PostCSS vanuit de CLI uitgevoerd wordt met een bepaalde plugin moet
+        deze plugin ook global geinstalleerd zijn.</p>
+      <p>Het uitvoeren van PostCSS via de command line en een plugin gaat als volgt:</p>
+      <pre><code class='language-bash' lang='bash'>postcss src/css/main.css --use autoprefixer -o dist/css/style.css
+      </code></pre>
+      <p>In dit geval heb ik
+        <a href='https://github.com/postcss/autoprefixer'>autoprefixer</a> als plugin gebruikt tijdens het maken van de
+        <code>style.css</code>. </p>
+      <p>Het is echter makkelijker om een config file aan te maken. Standaard pakt PostCSS
+        <code>postcss.config.js</code> als config file. Autoprefixer in de config file ziet er als volgt uit:</p>
+      <pre><code class='language-javascript' lang='javascript'>// postcss.config.js
+      module.exports = {
+        map: true,
+        plugins: {
+          &quot;autoprefixer&quot;: {}
+        }
+      };
+      </code></pre>
+      <p>De
+        <code>map: true</code> optie wordt gebruikt om sourcemaps aan te maken. Deze worden onderaan de gecompileerde css geplaatst.</p>
+
+      <h2>Plugins</h2>
+      <p>PostCSS is principe alleen maar nuttig in combinatie met plugins. De
+        <a href='https://github.com/postcss/postcss/blob/master/docs/plugins.md'>lijst met plugins</a> is behoorlijk lang. In mijn project gebruik ik er drie. Namelijk
+        <a href='https://github.com/postcss/postcss-import'>postcss-import</a>,
+        <a href='https://preset-env.cssdb.org/features'>postcss-preset-env</a> en
+        <a href='https://github.com/postcss/autoprefixer'>autoprefixer</a>.</p>
+
+      <h3>Modulaire CSS met
+        <a href='https://github.com/postcss/postcss-import'>postcss-import</a>
+      </h3>
+      <p>Om de blog modulair op te bouwen met PostCSS heb je
+        <a href='https://github.com/postcss/postcss-import'>postcss-import</a> nodig. In principe is het overbodig om het kleine aantal regels CSS voor de blog op te breken
+        in verschillende bestanden maar om het alvast eens uit te proberen doe ik het toch. Bij een groot project zal ik
+        het namelijk wel nodig hebben.</p>
+      <p>
+        <strong>Installatie</strong>
+        De installatie van een plugin gaat via NPM. In dit geval met
+        <code>npm install postcss-import</code> en daarna is het een kwestie van het toevoegen van de plugin aan de
+        <code>postcss.config.js</code>. Bij deze plugin is het belangrijk dat hij als eerste ingeladen wordt.</p>
+      <pre><code class='language-javascript' lang='javascript'>// postcss.config.js
+      module.exports = {
+        map: true,
+        plugins: {
+          &quot;postcss-import&quot;: {},
+          &quot;autoprefixer&quot;: {},
+        }
+      };
+      </code></pre>
+      <p>
+        <strong>Gebruik</strong>
+        Vervolgens is het makkelijk om de plugin te gebruiken. Met
+        <code>@import &quot;filename.css&quot;;</code> kunnen bestanden geimporteerd worden. Het resultaat zal een
+        <code>.css</code> bestand zijn met daarin alle css achter elkaar geschreven in de volgorde waarin bestanden geimporteerd zijn. De
+        imports moeten wel altijd plaatsvinden aan de bovenkant van een bestand. Dit resulteert in mijn geval tot de volgende
+        bestandstructuur en
+        <code>main.css</code>:</p>
+      <pre><code class='language-bash' lang='bash'>css/
+      ├── components
+      │   ├── base.css
+      │   ├── nav.css
+      │   └── variables.css
+      └── main.css
+      </code></pre>
+      <pre><code class='language-css' lang='css'>/* main.css */
+      @import &quot;components/variables.css&quot;;
+      @import &quot;components/base.css&quot;;
+      @import &quot;components/nav.css&quot;;
+      </code></pre>
+
+      <h3>Futuristische CSS met
+        <a href='https://preset-env.cssdb.org/features'>postcss-preset-env</a>
+      </h3>
+      <p>Ik gebruik de plugin
+        <a href='https://github.com/csstools/postcss-preset-env'>postcss-preset-env</a> om futuristische CSS functionaliteiten toe te voegen aan mijn project.</p>
+      <pre><code class='language-javascript' lang='javascript'>// postcss.config.js
+      module.exports = {
+        map: true,
+        plugins: {
+          &quot;postcss-import&quot;: {},
+          &quot;postcss-preset-env&quot;: {
+            stage: 0
+          },
+          &quot;autoprefixer&quot;: {},
+        }
+      };
+      </code></pre>
+      <p>Een belangrijke instelling hier is
+        <code>stage: 0</code> . Er zijn verschillende stages die PostCSS hanteert. De stages lopen vanaf cijfer 0️⃣ t/m 5️⃣ waarbij de output
+        van PostCSS bij het laagste cijfer zo veel mogelijk browsers ondersteund en bij 5 de meest expirimentele features
+        rechtstreeks in de output neerzet. Omdat ik zo veel mogelijk browsers wil ondersteunen heb ik de stage op 0 gezet.
+        Het nadeel hieraan is wel dat de CSS wat bloated is.</p>
+      <p>Functionaliteiten die ik gebruikt heb in deze blog zijn gemarkeerd met een checkmark ✅.</p>
+      <ul>
+        <li>
+          <p>2️⃣
+            <a href='https://preset-env.cssdb.org/features#any-link-pseudo-class'>:any-link pseudo-class</a>
+          </p>
+        </li>
+        <li>
+          <p>3️⃣
+            <a href='https://preset-env.cssdb.org/features#break-properties'>break properties</a>
+          </p>
+        </li>
+        <li>
+          <p>2️⃣
+            <a href='https://preset-env.cssdb.org/features#case-insensitive-attributes'>case-insensitive attributes</a>
+          </p>
+        </li>
+        <li>
+          <p>1️⃣
+            <a href='https://preset-env.cssdb.org/features#color-functional-notation'>functional color notation</a>
+          </p>
+        </li>
+        <li>
+          <p>2️⃣ ✅
+            <a href='https://preset-env.cssdb.org/features#color-mod-function'>color-mod() function</a>
+          </p>
+        </li>
+        <li>
+          <p>1️⃣ ✅
+            <a href='https://preset-env.cssdb.org/features#custom-media-queries'>custom media queries</a>
+          </p>
+        </li>
+        <li>
+          <p>3️⃣ ✅
+            <a href='https://preset-env.cssdb.org/features#custom-properties'>custom properties</a>
+          </p>
+        </li>
+        <li>
+          <p>1️⃣ ✅
+            <a href='https://preset-env.cssdb.org/features#custom-selectors'>custom selectors</a>
+          </p>
+        </li>
+        <li>
+          <p>2️⃣
+            <a href='https://preset-env.cssdb.org/features#dir-pseudo-class'>:dir pseudo-class</a>
+          </p>
+        </li>
+        <li>
+          <p>0️⃣
+            <a href='https://preset-env.cssdb.org/features#environment-variables'>custom environment variables</a>
+          </p>
+        </li>
+        <li>
+          <p>2️⃣
+            <a href='https://preset-env.cssdb.org/features#focus-visible-pseudo-class'>:focus-visible pseudo-class</a>
+          </p>
+        </li>
+        <li>
+          <p>2️⃣
+            <a href='https://preset-env.cssdb.org/features#focus-within-pseudo-class'>:focus-within pseudo-class</a>
+          </p>
+        </li>
+        <li>
+          <p>3️⃣
+            <a href='https://preset-env.cssdb.org/features#font-variant-property'>font-variant property</a>
+          </p>
+        </li>
+        <li>
+          <p>3️⃣
+            <a href='https://preset-env.cssdb.org/features#gap-properties'>gap properties</a>
+          </p>
+        </li>
+        <li>
+          <p>2️⃣
+            <a href='https://preset-env.cssdb.org/features#gray-function'>gray() function</a>
+          </p>
+        </li>
+        <li>
+          <p>3️⃣
+            <a href='https://preset-env.cssdb.org/features#grid-layout'>grid layout</a>
+          </p>
+        </li>
+        <li>
+          <p>2️⃣ ✅
+            <a href='https://preset-env.cssdb.org/features#hexadecimal-alpha-notation'>alpha hex colors</a>
+          </p>
+        </li>
+        <li>
+          <p>2️⃣
+            <a href='https://preset-env.cssdb.org/features#hwb-function'>hwb() function</a>
+          </p>
+        </li>
+        <li>
+          <p>2️⃣ ✅
+            <a href='https://preset-env.cssdb.org/features#image-set-function'>image-set() function</a>
+          </p>
+        </li>
+        <li>
+          <p>2️⃣
+            <a href='https://preset-env.cssdb.org/features#lab-function'>lab() function</a>
+          </p>
+        </li>
+        <li>
+          <p>2️⃣
+            <a href='https://preset-env.cssdb.org/features#lch-function'>lch() function</a>
+          </p>
+        </li>
+        <li>
+          <p>2️⃣
+            <a href='https://preset-env.cssdb.org/features#logical-properties-and-values'>logical properties and values</a>
+          </p>
+        </li>
+        <li>
+          <p>2️⃣
+            <a href='https://preset-env.cssdb.org/features#matches-pseudo-class'>:matches pseudo-class</a>
+          </p>
+        </li>
+        <li>
+          <p>3️⃣
+            <a href='https://preset-env.cssdb.org/features#media-query-ranges'>media query ranges</a>
+          </p>
+        </li>
+        <li>
+          <p>0️⃣ ✅
+            <a href='https://preset-env.cssdb.org/features#nesting-rules'>nesting rules</a>
+          </p>
+        </li>
+        <li>
+          <p>2️⃣ ✅
+            <a href='https://preset-env.cssdb.org/features#not-pseudo-class'>:not pseudo-class</a>
+          </p>
+        </li>
+        <li>
+          <p>1️⃣ ✅
+            <a href='https://preset-env.cssdb.org/features#overflow-property'>overflow shorthand property</a>
+          </p>
+        </li>
+        <li>
+          <p>2️⃣ ✅
+            <a href='https://preset-env.cssdb.org/features#overflow-wrap-property'>overflow-wrap property</a>
+          </p>
+        </li>
+        <li>
+          <p>2️⃣
+            <a href='https://preset-env.cssdb.org/features#place-properties'>place properties</a>
+          </p>
+        </li>
+        <li>
+          <p>2️⃣
+            <a href='https://preset-env.cssdb.org/features#rebeccapurple-color'>rebeccapurple color</a>
+          </p>
+        </li>
+        <li>
+          <p>2️⃣ ✅
+            <a href='https://preset-env.cssdb.org/features#system-ui-font-family'>system-ui font family</a>
+          </p>
+
+        </li>
+
+      </ul>
+      <h3>
+        <a href='https://github.com/postcss/autoprefixer'>Autoprefixer</a>
+      </h3>
+      <p>De autoprefixer plugin zorgt ervoor dat de geschreven css automatisch wordt aangevuld met alle prefixes om de browser
+        compatibiliteit te vergroten.</p>
+      <p>Als er in de development css bijvoorbeeld dit wordt geschreven:</p>
+      <pre><code class='language-css' lang='css'>::placeholder {
+        color: gray;
+      }
+      </code></pre>
+      <p>Zal dit geexporteerd worden naar:</p>
+      <pre><code class='language-css' lang='css'>::-webkit-input-placeholder {
+        color: gray;
+      }
+      :-ms-input-placeholder {
+        color: gray;
+      }
+      ::-ms-input-placeholder {
+        color: gray;
+      }
+      ::placeholder {
+        color: gray;
+      }
+      </code></pre>
+      <p>Meer doet de plugin niet. Deze plugin is voor mij vooral handig geweest in een project waarbij ik IE11 moest ondersteunen
+        maar wel flexbox had gebruikt.</p>
+
+      <h2>Het gebruik van PostCSS</h2>
+      <p>De functionaliteit die PostCSS bied komt aardig in de buurt van SASS zo kan er
+        <strong>0️⃣genest</strong> worden en zijn er
+        <strong>1️⃣variabelen</strong> beschikbaar. Maar ook
+        <strong>2️⃣functies om kleuren aan te passen</strong> en een &quot;font-family&quot; die de browser verteld het
+        <strong>3️⃣ besturingsysteem lettertype</strong> te gebruiken.</p>
+      <pre><code class='language-css' lang='css'>:root {
+                        /* 3️⃣ OS font-family */
+        --mainFont: &quot;Roboto&quot;, system-ui, sans-serif;
+        --black: rgb(49, 49, 49);
+        --blue: rgb(87, 132, 255);
+        --blue-dark: color-mod(var(--blue) blackness(30%)); /* 2️⃣ Color functions */
+        --light-gray: #e1e1e1;
+        --lighter-gray: #e1e1e105;
+      }
+      
+      html {
+        font-family: var(--mainFont);
+        color: var(--black);
+      }
+      
+      a {
+        color: var(--blue);
+        transition: color ease-in-out 0.1s;
+        text-decoration: none;
+      
+        /* 0️⃣ Nesting */
+        &amp;:hover {
+          /* 1️⃣ Variables */
+          color: var(--blue-dark); 
+        }
+      }
+      </code></pre>
+      <p>Andere mooie toevoegingen die ik uitgeprobeerd heb zijn
+        <strong>4️⃣ custom selectors</strong> en
+        <strong>5️⃣ custom media queries</strong>. </p>
+      <pre><code class='language-css' lang='css'>/* 4️⃣ Custom selector decleration */
+      @custom-selector :--headings h1, h2, h3, h4, h5, h6;
+      @custom-selector :--codeBlocks pre, code;
+      
+      /* 4️⃣ Custom selector use */
+      :--headings {
+        margin-bottom: 0;
+        overflow-wrap: break-word;
+          
+        &amp; + p {
+          margin-top: 1rem;
+        }
+      }
+      
+      /* 5️⃣ Custom media query decleration */
+      @custom-media --averageMobile (max-width: 31.25rem);
+      
+      /* 5️⃣ Custom media query use */
+      @media (--averageMobile) {
+        h1 {
+          font-size: 2.25rem;
+          margin-top: 4rem;
+        }
+      }
+      </code></pre>
+
+      <h2>Conclusie</h2>
+      <p>Al met al heb ik alle functionaliteiten die ik normaal gesproken van SASS gebruik ook beschikbaar in PostCSS. Verder
+        is PostCSS beter voorbereid op de toekomst. Op het moment dat browser funcitonaliteit geod genoeg ondersteund wordt
+        kan de
+        <code>stage</code> opgehoogd worden en is er weer een beetje bloat minder op het web.</p>
+      <p>Ik ga PostCSS zeker in plaats van SASS gebruiken waar mogelijk. Het was even uitvogelen hoe de plugins nou precies
+        werkten maar het werkt allemaal soepel en er is een grote community. PostCSS kan in elke relevante buildtool gebruikt
+        worden.
+      </p>
+    </article>
+  </main>
+
+</body>
+
+</html>

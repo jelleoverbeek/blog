@@ -42,6 +42,7 @@
   },
   "homepage": "https://github.com/jelleoverbeek/blog#readme",
   "dependencies": {
+    "postcss-import": "^11.1.0",
     "watchify": "^3.11.0"
   },
   "devDependencies": {
