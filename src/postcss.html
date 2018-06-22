@@ -20,111 +20,116 @@
 
     <article>
       <h1>PostCSS</h1>
-      <p>Waar ik vroeger LESS als eerste installeerde in combinatie met 9545,8 andere tools om dit te compilen is dat tegenwoordig
-        SASS geworden. Bij elk project installeer ik de taal zowat als eerste. Bij ons op kantoor, en bij veel andere bedrijven,
-        is dit ook de standaard. Dit terwijl er met CSS-Next veel van de SASS functionaliteit overbodig is geworden. PostCSS
-        biedt ons de mogelijkheid futuristische CSS te schrijven en deze te compilen naar CSS die nog wel bruikbaar is in
-        hedendaagse browsers.</p>
-      <p>In dit artikel ga ik onderzoeken of het tijd is om SASS te vervangen met PostCSS. Het is de eerste keer dat ik gebruik
-        maak van PostCSS en ga er dus onervaren in. Een mooie test om te kijken hoe lastig het is om over te stappen.</p>
-
-      <h2>Opzetten</h2>
-      <p>Voor dit project gebruik ik NPM en PostCSS in combinatie met NPM scripts. Het gebruiken van enkel NPM scripts is ook
-        nieuw voor mij. In een ander artikel ga ik hier op in. Ik ga de blog vormgeven waar u zich nu op bevindt.</p>
-      <p>Tijdens het opzetten van PostCSS kwam ik er achter dat het met de CLI soms wat lastig te volgen is omdat de meeste
-        voorbeelden i.c.m. Gulp of Webpack zijn. Wanneer PostCSS vanuit de CLI uitgevoerd wordt met een bepaalde plugin moet
-        deze plugin ook global geinstalleerd zijn.</p>
-      <p>Het uitvoeren van PostCSS via de command line en een plugin gaat als volgt:</p>
+      <p>Some years ago the first thing I installed when I started a new project was LESS. These days I use SCSS for my personal
+        projects, but also at work. It is the standard at our company for a while now. So... time to explore some new options.
+        Following a tip from my teacher I dove into PostCSS. PostCSS enables the possibility to use futuristic CSS in older
+        browsers.
+      </p>
+      <p>While writing this article I&#39;m going to research if I&#39;m ready to swap SCSS with PostCSS in my workflow. It&#39;s
+        the first time I use PostCSS so I&#39;m going in as a newb. A nice oppertunity to check out if it&#39;s hard to understand
+        PostCSS as a newby.</p>
+      <p>&nbsp;</p>
+      <h2>Setup</h2>
+      <p>For this project I&#39;m going to use NPM scripts as building tool. This is also the first time I&#39;m using NPM scripts
+        as building tool. In another article I wrote how did go for me. The project I&#39;m using PostCSS is the blog you
+        are reading right now. </p>
+      <p>While setting up PostCSS I discovered that following guides can be a bit hard because they are based on Webpack or
+        Gulp most of the times. When using PostCSS with the command line (because NPM scripts) you have to install it globally.
+        Not really handy...</p>
+      <p>Compiling PostCSS to normal CSS using a CLI command is looking like this:</p>
       <pre><code class='language-bash' lang='bash'>postcss src/css/main.css --use autoprefixer -o dist/css/style.css
-      </code></pre>
-      <p>In dit geval heb ik
-        <a href='https://github.com/postcss/autoprefixer'>autoprefixer</a> als plugin gebruikt tijdens het maken van de
-        <code>style.css</code>. </p>
-      <p>Het is echter makkelijker om een config file aan te maken. Standaard pakt PostCSS
-        <code>postcss.config.js</code> als config file. Autoprefixer in de config file ziet er als volgt uit:</p>
+</code></pre>
+      <p>In this particular case I also included a plugin called autoprefixer. PostCSS is nothing without it&#39;s plugins there
+        are a lot.</p>
+      <p>So typing them all out in a command would be a bit annoying and unclear. To fix this it&#39;s best to make a config
+        file. By default PostCSS looks for a config file named
+        <code>postcss.config.js</code>. Running the same command in combination with a config file will look like this:</p>
       <pre><code class='language-javascript' lang='javascript'>// postcss.config.js
-      module.exports = {
-        map: true,
-        plugins: {
-          &quot;autoprefixer&quot;: {}
-        }
-      };
-      </code></pre>
-      <p>De
-        <code>map: true</code> optie wordt gebruikt om sourcemaps aan te maken. Deze worden onderaan de gecompileerde css geplaatst.</p>
-
+module.exports = {
+  map: true,
+  plugins: {
+    &quot;autoprefixer&quot;: {}
+  }
+};
+</code></pre>
+      <pre><code class='language-bash' lang='bash'>postcss src/css/main.css -o dist/css/style.css
+</code></pre>
+      <p>The
+        <code>map: true</code> option is used to tell PostCSS to generate sourcemaps, usefull for debugging. The sourcemaps are placed inline at
+        the bottom of the generated CSS.</p>
+      <p>&nbsp;</p>
       <h2>Plugins</h2>
-      <p>PostCSS is principe alleen maar nuttig in combinatie met plugins. De
-        <a href='https://github.com/postcss/postcss/blob/master/docs/plugins.md'>lijst met plugins</a> is behoorlijk lang. In mijn project gebruik ik er drie. Namelijk
+      <p>As I said before PostCSS is nothing without it&#39;s plugins and there is a
+        <a href='https://github.com/postcss/postcss/blob/master/docs/plugins.md'>long list</a> of them. In my project I use three of them:
         <a href='https://github.com/postcss/postcss-import'>postcss-import</a>,
-        <a href='https://preset-env.cssdb.org/features'>postcss-preset-env</a> en
+        <a href='https://preset-env.cssdb.org/features'>postcss-preset-env</a> and
         <a href='https://github.com/postcss/autoprefixer'>autoprefixer</a>.</p>
-
-      <h3>Modulaire CSS met
+      <p>&nbsp;</p>
+      <h3>Modulair CSS using
         <a href='https://github.com/postcss/postcss-import'>postcss-import</a>
       </h3>
-      <p>Om de blog modulair op te bouwen met PostCSS heb je
-        <a href='https://github.com/postcss/postcss-import'>postcss-import</a> nodig. In principe is het overbodig om het kleine aantal regels CSS voor de blog op te breken
-        in verschillende bestanden maar om het alvast eens uit te proberen doe ik het toch. Bij een groot project zal ik
-        het namelijk wel nodig hebben.</p>
+      <p>To build up the blog modular I need
+        <a href='https://github.com/postcss/postcss-import'>postcss-import</a>. As this is a small project using this plugin is a bit of a overkill but when using it in bigger
+        projects I will need to. So I&#39;m just going to use it anyway.</p>
       <p>
-        <strong>Installatie</strong>
-        De installatie van een plugin gaat via NPM. In dit geval met
-        <code>npm install postcss-import</code> en daarna is het een kwestie van het toevoegen van de plugin aan de
-        <code>postcss.config.js</code>. Bij deze plugin is het belangrijk dat hij als eerste ingeladen wordt.</p>
+        <strong>Installation</strong>
+        Installing a plugin is done using NPM. In this case with the command
+        <code>npm install postcss-import</code>. After that the only thing left to do is add it to the
+        <code>postcss.config.js</code>. According to the docs of this plugin it needs to the first plugin in the config file.</p>
       <pre><code class='language-javascript' lang='javascript'>// postcss.config.js
-      module.exports = {
-        map: true,
-        plugins: {
-          &quot;postcss-import&quot;: {},
-          &quot;autoprefixer&quot;: {},
-        }
-      };
-      </code></pre>
+module.exports = {
+  map: true,
+  plugins: {
+    &quot;postcss-import&quot;: {},
+    &quot;autoprefixer&quot;: {},
+  }
+};
+</code></pre>
       <p>
-        <strong>Gebruik</strong>
-        Vervolgens is het makkelijk om de plugin te gebruiken. Met
-        <code>@import &quot;filename.css&quot;;</code> kunnen bestanden geimporteerd worden. Het resultaat zal een
-        <code>.css</code> bestand zijn met daarin alle css achter elkaar geschreven in de volgorde waarin bestanden geimporteerd zijn. De
-        imports moeten wel altijd plaatsvinden aan de bovenkant van een bestand. Dit resulteert in mijn geval tot de volgende
-        bestandstructuur en
-        <code>main.css</code>:</p>
+        <strong>Use</strong>
+        Using the plugin is easy. With
+        <code>@import &quot;filename.css&quot;;</code> files can be imported. The result will be a css file with all the code write after each other. Ofcourse in the order
+        the imports are written. Imports always have to be at the top of the file. This made me change my file structure
+        a bit:</p>
       <pre><code class='language-bash' lang='bash'>css/
-      ├── components
-      │   ├── base.css
-      │   ├── nav.css
-      │   └── variables.css
-      └── main.css
-      </code></pre>
+├── components
+│   ├── base.css
+│   ├── nav.css
+│   └── variables.css
+└── main.css
+</code></pre>
       <pre><code class='language-css' lang='css'>/* main.css */
-      @import &quot;components/variables.css&quot;;
-      @import &quot;components/base.css&quot;;
-      @import &quot;components/nav.css&quot;;
-      </code></pre>
-
-      <h3>Futuristische CSS met
+@import &quot;components/variables.css&quot;;
+@import &quot;components/base.css&quot;;
+@import &quot;components/nav.css&quot;;
+</code></pre>
+      <p>&nbsp;</p>
+      <h3>Futuristic css using
         <a href='https://preset-env.cssdb.org/features'>postcss-preset-env</a>
       </h3>
-      <p>Ik gebruik de plugin
-        <a href='https://github.com/csstools/postcss-preset-env'>postcss-preset-env</a> om futuristische CSS functionaliteiten toe te voegen aan mijn project.</p>
+      <p>To write futuristic CSS I use the plugin
+        <a href='https://github.com/csstools/postcss-preset-env'>postcss-preset-env</a>. The plugin adds a lof of functionality to PostCSS. You can see it as a bundle of a lot of
+        small plugins.</p>
       <pre><code class='language-javascript' lang='javascript'>// postcss.config.js
-      module.exports = {
-        map: true,
-        plugins: {
-          &quot;postcss-import&quot;: {},
-          &quot;postcss-preset-env&quot;: {
-            stage: 0
-          },
-          &quot;autoprefixer&quot;: {},
-        }
-      };
-      </code></pre>
-      <p>Een belangrijke instelling hier is
-        <code>stage: 0</code> . Er zijn verschillende stages die PostCSS hanteert. De stages lopen vanaf cijfer 0️⃣ t/m 5️⃣ waarbij de output
-        van PostCSS bij het laagste cijfer zo veel mogelijk browsers ondersteund en bij 5 de meest expirimentele features
-        rechtstreeks in de output neerzet. Omdat ik zo veel mogelijk browsers wil ondersteunen heb ik de stage op 0 gezet.
-        Het nadeel hieraan is wel dat de CSS wat bloated is.</p>
-      <p>Functionaliteiten die ik gebruikt heb in deze blog zijn gemarkeerd met een checkmark ✅.</p>
+module.exports = {
+  map: true,
+  plugins: {
+    &quot;postcss-import&quot;: {},
+    &quot;postcss-preset-env&quot;: {
+      stage: 0
+    },
+    &quot;autoprefixer&quot;: {},
+  }
+};
+</code></pre>
+      <p>An important setting here is
+        <code>stage: 0</code>.
+        <a href='https://github.com/csstools/postcss-preset-env'>Postcss-preset-env</a> has multiple stages. The stage is defining how the PostCSS wil compile. The minimal is 0️⃣
+        and the maximum 5️⃣. Setting it to zero will compile the CSS so that it supports as much browsers as possible. Setting
+        it to five will only export the expirimental CSS and so browser support will be low. By default the stage is set
+        to 2️⃣. I want to support as much browsers as possible so it did set it to zero. The downside of this is that the
+        CSS is getting more bloated.</p>
+      <p>I marked features that I used while coding this blog with a checkmark: ✅.</p>
       <ul>
         <li>
           <p>2️⃣
@@ -280,108 +285,121 @@
           <p>2️⃣ ✅
             <a href='https://preset-env.cssdb.org/features#system-ui-font-family'>system-ui font family</a>
           </p>
-
+          <p>&nbsp;</p>
         </li>
 
       </ul>
       <h3>
         <a href='https://github.com/postcss/autoprefixer'>Autoprefixer</a>
       </h3>
-      <p>De autoprefixer plugin zorgt ervoor dat de geschreven css automatisch wordt aangevuld met alle prefixes om de browser
-        compatibiliteit te vergroten.</p>
-      <p>Als er in de development css bijvoorbeeld dit wordt geschreven:</p>
+      <p>The autoprefixer plugin adds prefixes to increase browser compatibility.</p>
+      <p>If the original, by the developer written CSS looked like this:</p>
       <pre><code class='language-css' lang='css'>::placeholder {
-        color: gray;
-      }
-      </code></pre>
-      <p>Zal dit geexporteerd worden naar:</p>
+  color: gray;
+}
+</code></pre>
+      <p>It will be exported to this:</p>
       <pre><code class='language-css' lang='css'>::-webkit-input-placeholder {
-        color: gray;
-      }
-      :-ms-input-placeholder {
-        color: gray;
-      }
-      ::-ms-input-placeholder {
-        color: gray;
-      }
-      ::placeholder {
-        color: gray;
-      }
-      </code></pre>
-      <p>Meer doet de plugin niet. Deze plugin is voor mij vooral handig geweest in een project waarbij ik IE11 moest ondersteunen
-        maar wel flexbox had gebruikt.</p>
-
-      <h2>Het gebruik van PostCSS</h2>
-      <p>De functionaliteit die PostCSS bied komt aardig in de buurt van SASS zo kan er
-        <strong>0️⃣genest</strong> worden en zijn er
-        <strong>1️⃣variabelen</strong> beschikbaar. Maar ook
-        <strong>2️⃣functies om kleuren aan te passen</strong> en een &quot;font-family&quot; die de browser verteld het
-        <strong>3️⃣ besturingsysteem lettertype</strong> te gebruiken.</p>
+  color: gray;
+}
+:-ms-input-placeholder {
+  color: gray;
+}
+::-ms-input-placeholder {
+  color: gray;
+}
+::placeholder {
+  color: gray;
+}
+</code></pre>
+      <p>This is all the plugin does. It&#39;s very usefull when using flexbox and still having to support older browsers.</p>
+      <p>&nbsp;</p>
+      <h2>Using PostCSS</h2>
+      <p>The features that PostCSS offers are getting really close to what SCSS has to offer. It&#39;s possible to
+        <strong>0️⃣ nest</strong> css and there are also
+        <strong>1️⃣ variables</strong> available. There is also the oppertunity to use
+        <strong>2️⃣ color functions</strong> and to add a &quot;font-family&quot; that tells the browser to use the
+        <strong>3️⃣ system font</strong>.</p>
       <pre><code class='language-css' lang='css'>:root {
-                        /* 3️⃣ OS font-family */
-        --mainFont: &quot;Roboto&quot;, system-ui, sans-serif;
-        --black: rgb(49, 49, 49);
-        --blue: rgb(87, 132, 255);
-        --blue-dark: color-mod(var(--blue) blackness(30%)); /* 2️⃣ Color functions */
-        --light-gray: #e1e1e1;
-        --lighter-gray: #e1e1e105;
-      }
-      
-      html {
-        font-family: var(--mainFont);
-        color: var(--black);
-      }
-      
-      a {
-        color: var(--blue);
-        transition: color ease-in-out 0.1s;
-        text-decoration: none;
-      
-        /* 0️⃣ Nesting */
-        &amp;:hover {
-          /* 1️⃣ Variables */
-          color: var(--blue-dark); 
-        }
-      }
-      </code></pre>
-      <p>Andere mooie toevoegingen die ik uitgeprobeerd heb zijn
-        <strong>4️⃣ custom selectors</strong> en
+    			        /* 3️⃣ OS font-family */
+  --mainFont: &quot;Roboto&quot;, system-ui, sans-serif;
+  --black: rgb(49, 49, 49);
+  --blue: rgb(87, 132, 255);
+  --blue-dark: color-mod(var(--blue) blackness(30%)); /* 2️⃣ Color functions */
+  --light-gray: #e1e1e1;
+  --lighter-gray: #e1e1e105;
+}
+
+html {
+  font-family: var(--mainFont);
+  color: var(--black);
+}
+
+a {
+  color: var(--blue);
+  transition: color ease-in-out 0.1s;
+  text-decoration: none;
+
+  /* 0️⃣ Nesting */
+  &amp;:hover {
+    /* 1️⃣ Variables */
+    color: var(--blue-dark); 
+  }
+}
+</code></pre>
+      <p>Other nice features that I used are
+        <strong>4️⃣ custom selectors</strong> and
         <strong>5️⃣ custom media queries</strong>. </p>
       <pre><code class='language-css' lang='css'>/* 4️⃣ Custom selector decleration */
-      @custom-selector :--headings h1, h2, h3, h4, h5, h6;
-      @custom-selector :--codeBlocks pre, code;
-      
-      /* 4️⃣ Custom selector use */
-      :--headings {
-        margin-bottom: 0;
-        overflow-wrap: break-word;
-          
-        &amp; + p {
-          margin-top: 1rem;
-        }
-      }
-      
-      /* 5️⃣ Custom media query decleration */
-      @custom-media --averageMobile (max-width: 31.25rem);
-      
-      /* 5️⃣ Custom media query use */
-      @media (--averageMobile) {
-        h1 {
-          font-size: 2.25rem;
-          margin-top: 4rem;
-        }
-      }
-      </code></pre>
+@custom-selector :--headings h1, h2, h3, h4, h5, h6;
+@custom-selector :--codeBlocks pre, code;
 
-      <h2>Conclusie</h2>
-      <p>Al met al heb ik alle functionaliteiten die ik normaal gesproken van SASS gebruik ook beschikbaar in PostCSS. Verder
-        is PostCSS beter voorbereid op de toekomst. Op het moment dat browser funcitonaliteit geod genoeg ondersteund wordt
-        kan de
-        <code>stage</code> opgehoogd worden en is er weer een beetje bloat minder op het web.</p>
-      <p>Ik ga PostCSS zeker in plaats van SASS gebruiken waar mogelijk. Het was even uitvogelen hoe de plugins nou precies
-        werkten maar het werkt allemaal soepel en er is een grote community. PostCSS kan in elke relevante buildtool gebruikt
-        worden.
-      </p>
+/* 4️⃣ Custom selector use */
+:--headings {
+  margin-bottom: 0;
+  overflow-wrap: break-word;
+    
+  &amp; + p {
+    margin-top: 1rem;
+  }
+}
+
+/* 5️⃣ Custom media query decleration */
+@custom-media --averageMobile (max-width: 31.25rem);
+
+/* 5️⃣ Custom media query use */
+@media (--averageMobile) {
+  h1 {
+    font-size: 2.25rem;
+    margin-top: 4rem;
+  }
+}
+</code></pre>
+      <p>&nbsp;</p>
+      <h2>Conclusion</h2>
+      <p>The SCSS features I use most are also available in PostCSS. PostCSS feels better prepared for the future, when browsers
+        grow up it&#39;s easy to change the
+        <code>stage</code> setting and have less bloated CSS. </p>
+      <p>I&#39;m definitely going to use PostCSS for more projects where possible. It was a bit of a hassle to figure out how
+        the plugins worked using the CLI but there was enough information on the interwebs to find out. Also every major
+        buildtool supports PostCSS.</p>
+      <p>&nbsp;</p>
+      <h2>Sources</h2>
+      <ul>
+        <li>autoprefixer. (n.d.). Retrieved June 22, 2018, from
+          <a href='https://www.npmjs.com/package/autoprefixer' target='_blank' class='url'>https://www.npmjs.com/package/autoprefixer</a>
+        </li>
+        <li>Csstools. (n.d.). postcss-preset-env. Retrieved June 22, 2018, from
+          <a href='https://github.com/csstools/postcss-preset-env' target='_blank' class='url'>https://github.com/csstools/postcss-preset-env</a>
+        </li>
+        <li>Postcss. (n.d.). postcss-cli. Retrieved June 22, 2018, from
+          <a href='https://github.com/postcss/postcss-cli' target='_blank' class='url'>https://github.com/postcss/postcss-cli</a>
+        </li>
+        <li>Postcss. (n.d.). postcss. Retrieved June 22, 2018, from
+          <a href='https://github.com/postcss/postcss' target='_blank' class='url'>https://github.com/postcss/postcss</a>
+        </li>
+
+      </ul>
     </article>
   </main>
 

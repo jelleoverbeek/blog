@@ -94,10 +94,17 @@ pre {
 }
 
 ul {
+  font-size: 1.15rem;
+  line-height: 1.6;
 }
 
 li {
   &:not(:last-child) {
     margin-bottom: 0.5rem;
   }
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }
