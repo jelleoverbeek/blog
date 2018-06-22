@@ -46,7 +46,7 @@
 ├── article.html
 └── index.html
 </code></pre>
-      <p>&nbsp;</p>
+
       <h2>Creating folders</h2>
       <p>As a start I made a NPM script that creates the folder structure in a
         <code>dist</code> folder. Also I created a script that copies HTML, PNG, SVG and JPG files.</p>
@@ -91,14 +91,14 @@ cd src &amp;&amp; find ./ -name &#39;*.html&#39; | cpio -pdm ../dist/ &amp;&amp;
         for specific files, in this case HTML files. After finding the files the
         <code>cpio</code> command copies all the files including the path to the
         <code>dist</code> folder.</p>
-      <p>&nbsp;</p>
+
       <h2>Cleaning up the
         <code>dist</code> folder</h2>
       <p>Before copying files to the
         <code>dist</code> folder I like to remove the whole folder. This case there won&#39;t be unnecessary files left behind. Using the
         system command
         <code>rm -rf dist</code> this is easy.</p>
-      <p>&nbsp;</p>
+
       <h2>Browserify</h2>
       <p>Browserify is a tool to bundle JavaScript files. It does this the same way Node does: using the CommonJS pattern. So
         by using the
@@ -120,7 +120,7 @@ const slider = require(&quot;./slider&quot;);
         <code>bundle.js</code>.</p>
       <pre><code class='language-bash' lang='bash'>browserify src/js/main.js -o dist/js/bundle.js
 </code></pre>
-      <p>&nbsp;</p>
+
       <h2>PostCSS</h2>
       <p>I usually use SCSS in my projects. This time I chose to use PostCSS. PostCSS is a tool to write futuristic CSS while
         still supporting older browsers.</p>
@@ -146,7 +146,7 @@ module.exports = {
         <code>postcss.config.js</code> as configuration file. To use the
         <a href='https://www.npmjs.com/package/autoprefixer'>autoprefixer</a> and
         <a href='https://preset-env.cssdb.org/'>postcss-preset-env</a> plugins I needed to install them globally.</p>
-      <p>&nbsp;</p>
+
       <h2>Adding all the commands to the package.json</h2>
       <p>Nu ik alle losse commando&#39;s heb voeg ik deze allemaal toe aan de
         <code>package.json</code> van het project. Het scripts object ziet er nu als volgt uit. Als laatste commando heb ik
@@ -174,7 +174,7 @@ module.exports = {
         <code>build</code> command, this script contains all the scripts above it. NPM scripts are run by using the
         <code>npm run &lt;command&gt;</code> command. So building the project would be done by running
         <code>npm run build</code> into the CLI.</p>
-      <p>&nbsp;</p>
+
       <h2>Watchers</h2>
       <p>The main reason I used gulp was because of the ease of using watchers. Before I started writing this article I didn&#39;t
         have a clue how this was done using NPM scripts. Ofcourse there was a package for that called
@@ -259,7 +259,7 @@ module.exports = {
       <pre><code class='language-bash' lang='bash'>watchify src/js/main.js -o dist/js/bundle.js
 </code></pre>
       <p>Adding the watchers above made using NPM scripts as build tool much faster and usable.</p>
-      <p>&nbsp;</p>
+
       <h2>Conclusion</h2>
       <p>Against my expectations compiling using NPM scripts wasn&#39;t as fast as I expected. Especially watching files using
         npm-watch was slow. Cutting the watch tasks in smaller pieces and using other watch functionalities made it a lot
