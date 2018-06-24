@@ -1,3 +1,2 @@
 // main.js
-
-console.log("test");
+hljs.initHighlightingOnLoad();
