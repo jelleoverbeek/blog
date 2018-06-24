@@ -42,7 +42,13 @@
   },
   "homepage": "https://github.com/jelleoverbeek/blog#readme",
   "dependencies": {
+    "highlight": "^0.2.4",
+    "highlight-bash": "0.0.1",
+    "highlight-css": "0.0.2",
+    "highlight-javascript": "0.0.3",
+    "highlight-xml": "0.0.1",
     "postcss-import": "^11.1.0",
+    "syntax-highlighter": "0.0.3",
     "watchify": "^3.11.0"
   },
   "devDependencies": {
