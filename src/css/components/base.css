@@ -32,6 +32,12 @@ h1 {
 h2 {
   margin-top: 3rem;
   font-size: 2rem;
+
+  & + h3 {
+    margin-top: 0.5rem;
+    font-weight: normal;
+    margin-bottom: 1.5rem;
+  }
 }
 
 h3 {
