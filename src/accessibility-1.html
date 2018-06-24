@@ -15,32 +15,32 @@
 
     <main>
         <nav>
-            <a href="index.html" class="back">Terug naar overzicht</a>
+            <a href="index.html" class="back">Back to overview</a>
         </nav>
 
         <article>
             <h1>Accessibility - part 1</h1>
-            <p>The last few weeks I spend a lot of time making websites more accessibile for people with disabilities. I tested
-                these websites with people that actually have disabilities. This gave a lot of insights which I couldn&#39;t
+            <p>The last few weeks I spend a lot of time making websites more accessible for people with disabilities. I tested
+                these websites with people that actually have disabilities. This gave a lot of insights which I could not
                 predict without testing. Browsers have a lot of features that are specially made for people with a disability.
                 The disabilities I&#39;m talking about span from deafness till poor motor skills.</p>
             <p>You might think only a small part of your users have a disability but that isn&#39;t true. Did you ever broke
-                an arm? Then you also did have a disability. As we get older there will be more and more users with disabilites.
+                an arm? Then you also did have a disability. As we get older there will be more and more users with disabilities.
                 Think about people with bad vision or decreased motor skills.</p>
             <h2>Deaf people</h2>
             <p>Before diving into the world of accessibility I thought that deaf people won&#39;t have a lot of problems on
-                the web. It&#39;s all visual after all. After having an interview with a deaf person it seemed this wasn&#39;t
+                the web. It&#39;s all visual after all. After having an interview with a deaf person it seemed this was not
                 entirely true. Deaf people read our language as a second language. It&#39;s harder to read than that it is
                 for us. The grammar is different and sentences are shorter in sign language.</p>
             <p>Reading in an other language is ofcourse harder then reading our own. Especially when using a lot of jargon.
                 For jargon there is no sign. So when a interpreter tries to translate jargon to sign language they usually
                 have to spell it. The deaf person then has to either understand it or it has to be explained by the interpreter.
                 This all takes, as you may expect, a lot of time.</p>
-            <p>Video is a large part of the web. Most of them doesn&#39;t have any subtitles so they are hard to follow for
+            <p>Video is a large part of the web. Most of them does not have any subtitles so they are hard to follow for
                 deaf people. Now you might think about the automatically generated subtitles that YouTube uses. I did too.
                 However these are very hard to follow and do often not reflect the actual content. The deaf person I talked
-                to prefered no subtitles at all above generated subtitles. So subtitles have to be made by an actual person
-                to be usefull.</p>
+                to preferred no subtitles at all above generated subtitles. So subtitles have to be made by an actual person
+                to be useful.</p>
             <p>
                 <strong>Conclusion</strong>
             </p>
@@ -53,25 +53,25 @@
 
             <h2>Blind people</h2>
             <p>On the contrary, to deaf people blind poeple are depending on sound and touch. The web isn&#39;t really much
-                sound and touch. Luckilly there are tools to help blind people. Two of them are screenreaders and braille
+                sound and touch. Luckily there are tools to help blind people. Two of them are screen readers and braille
                 displays.
             </p>
             <p>
-                <strong>Screenreaders</strong>
-                Screenreaders read the content on the screen out loud. They follow the HTML structure of a page and ignore almost all CSS
+                <strong>Screen readers</strong>
+                Screen readers read the content on the screen out loud. They follow the HTML structure of a page and ignore almost all CSS
                 (Northup, 2017). Except for the
                 <code>visibility: hidden;</code> and
                 <code>display: none;</code> codes. As you might not expect
-                <code>opacity: 0;</code> is read by a screenreader. So it&#39;s important to test with an actual screenreader.</p>
-            <p>Some of the most used screenreaders are (WebAIM, 2015)
+                <code>opacity: 0;</code> is read by a screen readers. So it&#39;s important to test with an actual screen reader.</p>
+            <p>Some of the most used screen readers are (WebAIM, 2015)
                 <a href='https://www.freedomscientific.com/Products/Blindness/JAWS'>JAWS</a> and
-                <a href='https://www.nvaccess.org/'>NVDA</a>. Those are not build-in an operating system. Other build-in screenreaders are VoiceOver, that is
+                <a href='https://www.nvaccess.org/'>NVDA</a>. Those are not build-in an operating system. Other build-in screen readers are VoiceOver, that is
                 delivered with Apple devices and Window-Eyes that is delivered with Windows computers.</p>
             <p>
                 <strong>Braille displays</strong>
                 Braille displays are strokes of dots where the dots reflect the content on the screen. Braille displays are very expensive
-                and are less used then screenreaders. They also are getting less used by the year. According to Tom, one
-                of the speakers I attended to, this is because of the increasing quality of healthcare. People are getting
+                and are less used then screen readers. They also are getting less used by the year. According to Tom, one
+                of the speakers I attended to, this is because of the increasing quality of health care. People are getting
                 blind at an older age then before. And when people are older it&#39;s very hard to learn braille.</p>
             <p>
                 <img src='img/Braille-Sense-U2_MINI.jpg' alt='Braille reader' referrerPolicy='no-referrer' />
@@ -81,11 +81,11 @@
             </p>
 
             <p>
-                <strong>Blindheid en het web</strong>
-                Standard the web is accessibile for blind people. As I said before the structure plays a crucial part in the accessibility.
+                <strong>Blindness and the web</strong>
+                Standard the web is accessible for blind people. As I said before the structure plays a crucial part in the accessibility.
                 There are many developers that only take into account &quot;normal users&quot;. Not because they are evil
                 but probably only because they don&#39;t know or there is no money for it. Here are some basic rules to make
-                websites more accessibile.</p>
+                websites more accessible.</p>
             <ul>
                 <li>Semantics: Use elements for what they are meant to do. For example:
                     <code>&lt;a href=&quot;index.html&quot;&gt;Homepage&lt;/a&gt;</code> to create a link and not a
@@ -93,7 +93,7 @@
                 <li>Poorly designed captcha&#39;s are impossible to solve for blind people. Take this into account when using
                     one!
                 </li>
-                <li>Sound on websites override screenreaders. So a video with autoplay makes it very hard to navigate trough
+                <li>Sound on websites override screen readers. So a video with autoplay makes it very hard to navigate trough
                     a website.</li>
                 <li>Add
                     <code>alt=&quot;&quot;</code> tags to
@@ -108,13 +108,11 @@
             <p>For deaf people it&#39;s important that sentences are short and simple. In many cases this is also the best for
                 the average user. So it&#39;s a win-win situation when you take that into account. Automatically generated
                 subtitles and jargon are hard to follow and you should avoid these.</p>
-            <p>Blinde mensen zijn afhankelijk van de structuur van een website. Zorg dus voor semantische HTML en maak zo veel
-                mogelijk gebruik van ingebouwde browserfunctionaliteiten. Dit zorgt voor een betere ervaring voor blinde
-                mensen.
-            </p>
-            <p>Blind people are heavily dependend on the structure of a website. Make HTML semantic and use as many browser
-                features as possible. This creates a better expierience for blind people (and search robots).</p>
-            <p>In the next part of this article I&#39;m diving into color blindness and people with motoric disorders.</p>
+
+            <p>Blind people are heavily depended on the structure of a website. Make HTML semantic and use as many browser
+                features as possible. This creates a better experience for blind people (and search robots).</p>
+            <p>In the next part of this article I&#39;m diving into color blindness and people with motor skill disorders.</p>
+
             <h2>Sources</h2>
             <ul>
                 <li>Braille Sense U2 MINI [Photograph]. (2013, November 8). Retrieved June 22, 2018, from

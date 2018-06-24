@@ -15,7 +15,7 @@
 
   <main>
     <nav>
-      <a href="index.html" class="back">Terug naar overzicht</a>
+      <a href="index.html" class="back">Back to overview</a>
     </nav>
 
     <article>
@@ -26,8 +26,8 @@
         browsers.
       </p>
       <p>While writing this article I&#39;m going to research if I&#39;m ready to swap SCSS with PostCSS in my workflow. It&#39;s
-        the first time I use PostCSS so I&#39;m going in as a newb. A nice oppertunity to check out if it&#39;s hard to understand
-        PostCSS as a newby.</p>
+        the first time I use PostCSS so I&#39;m going in as a newb. A nice opportunity to check out if it&#39;s hard to understand
+        PostCSS as a newb.</p>
 
       <h2>Setup</h2>
       <p>For this project I&#39;m going to use NPM scripts as building tool. This is also the first time I&#39;m using NPM scripts
@@ -55,7 +55,7 @@ module.exports = {
       <pre><code class='language-bash' lang='bash'>postcss src/css/main.css -o dist/css/style.css
 </code></pre>
       <p>The
-        <code>map: true</code> option is used to tell PostCSS to generate sourcemaps, usefull for debugging. The sourcemaps are placed inline at
+        <code>map: true</code> option is used to tell PostCSS to generate sourcemaps, useful for debugging. The sourcemaps are placed inline at
         the bottom of the generated CSS.</p>
 
       <h2>Plugins</h2>
@@ -126,7 +126,7 @@ module.exports = {
         <code>stage: 0</code>.
         <a href='https://github.com/csstools/postcss-preset-env'>Postcss-preset-env</a> has multiple stages. The stage is defining how the PostCSS wil compile. The minimal is 0️⃣
         and the maximum 5️⃣. Setting it to zero will compile the CSS so that it supports as much browsers as possible. Setting
-        it to five will only export the expirimental CSS and so browser support will be low. By default the stage is set
+        it to five will only export the experimental CSS and so browser support will be low. By default the stage is set
         to 2️⃣. I want to support as much browsers as possible so it did set it to zero. The downside of this is that the
         CSS is getting more bloated.</p>
       <p>I marked features that I used while coding this blog with a checkmark: ✅.</p>
@@ -312,12 +312,12 @@ module.exports = {
   color: gray;
 }
 </code></pre>
-      <p>This is all the plugin does. It&#39;s very usefull when using flexbox and still having to support older browsers.</p>
+      <p>This is all the plugin does. It&#39;s very useful when using flexbox and still having to support older browsers.</p>
 
       <h2>Using PostCSS</h2>
       <p>The features that PostCSS offers are getting really close to what SCSS has to offer. It&#39;s possible to
         <strong>0️⃣ nest</strong> css and there are also
-        <strong>1️⃣ variables</strong> available. There is also the oppertunity to use
+        <strong>1️⃣ variables</strong> available. There is also the opportunity to use
         <strong>2️⃣ color functions</strong> and to add a &quot;font-family&quot; that tells the browser to use the
         <strong>3️⃣ system font</strong>.</p>
       <pre><code class='language-css' lang='css'>:root {
@@ -350,7 +350,7 @@ a {
       <p>Other nice features that I used are
         <strong>4️⃣ custom selectors</strong> and
         <strong>5️⃣ custom media queries</strong>. </p>
-      <pre><code class='language-css' lang='css'>/* 4️⃣ Custom selector decleration */
+      <pre><code class='language-css' lang='css'>/* 4️⃣ Custom selector deceleration */
 @custom-selector :--headings h1, h2, h3, h4, h5, h6;
 @custom-selector :--codeBlocks pre, code;
 
@@ -364,7 +364,7 @@ a {
   }
 }
 
-/* 5️⃣ Custom media query decleration */
+/* 5️⃣ Custom media query deceleration */
 @custom-media --averageMobile (max-width: 31.25rem);
 
 /* 5️⃣ Custom media query use */
@@ -381,8 +381,8 @@ a {
         grow up it&#39;s easy to change the
         <code>stage</code> setting and have less bloated CSS. </p>
       <p>I&#39;m definitely going to use PostCSS for more projects where possible. It was a bit of a hassle to figure out how
-        the plugins worked using the CLI but there was enough information on the interwebs to find out. Also every major
-        buildtool supports PostCSS.</p>
+        the plugins worked using the CLI but there was enough information on the internet to find out. Also every major
+        build tool supports PostCSS.</p>
 
       <h2>Sources</h2>
       <ul>

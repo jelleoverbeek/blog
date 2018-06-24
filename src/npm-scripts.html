@@ -15,13 +15,13 @@
 
   <main>
     <nav>
-      <a href="index.html" class="back">Terug naar overzicht</a>
+      <a href="index.html" class="back">Back to overview</a>
     </nav>
 
     <article>
       <h1>NPM scripts</h1>
       <p>I use Gulp for a long time now. But it&#39;s time to try something else. In this article I&#39;m going to share my
-        expierences switching from Gulp to NPM scripts. One of the reasons I&#39;m switching is that I&#39;m getting a lot
+        experiences switching from Gulp to NPM scripts. One of the reasons I&#39;m switching is that I&#39;m getting a lot
         of errors when using Gulp these days. They are about deprecated dependencies or even ones with vulnerability&#39;s.</p>
       <p>Many people tell me I should try out Webpack. I&#39;m definitely going to do that someday but since I used NPM scripts
         a little I wanted to try out this first. In the end it looks logic to use as much native OS commands as possible.</p>
@@ -148,9 +148,6 @@ module.exports = {
         <a href='https://preset-env.cssdb.org/'>postcss-preset-env</a> plugins I needed to install them globally.</p>
 
       <h2>Adding all the commands to the package.json</h2>
-      <p>Nu ik alle losse commando&#39;s heb voeg ik deze allemaal toe aan de
-        <code>package.json</code> van het project. Het scripts object ziet er nu als volgt uit. Als laatste commando heb ik
-        <code>build</code> toegevoegd. Dit commando zal alle npm scripts opeenvolgend draaien.</p>
       <p>Now I have all the commands I have to add them to the
         <code>package.json</code> file. The scripts object is looking like this after doing that:</p>
       <pre><code class='language-json' lang='json'>&quot;scripts&quot;: {
@@ -210,7 +207,7 @@ module.exports = {
   }
 </code></pre>
       <p>After working on the blog for a while the watcher didn&#39;t seem to work very fast. It was kinda frustrating to style
-        a page while using this watcher. To increase the performance I created three seperate watchers for different files.</p>
+        a page while using this watcher. To increase the performance I created three separate watchers for different files.</p>
       <pre><code class='language-json' lang='json'>  &quot;watch&quot;: {
     &quot;watch-assets&quot;: {
       &quot;patterns&quot;: [
@@ -261,9 +258,9 @@ module.exports = {
       <p>Adding the watchers above made using NPM scripts as build tool much faster and usable.</p>
 
       <h2>Conclusion</h2>
-      <p>Against my expectations compiling using NPM scripts wasn&#39;t as fast as I expected. Especially watching files using
-        npm-watch was slow. Cutting the watch tasks in smaller pieces and using other watch functionalities made it a lot
-        faster and workable. Here is a list of pros and cons I expierenced in comparison with Gulp</p>
+      <p>Against my expectations compiling using NPM scripts was not as fast as I expected. Especially watching files using
+        npm-watch was slow. Cutting the watch tasks in smaller pieces and using other watch features made it a lot
+        faster and workable. Here is a list of pros and cons I experienced in comparison with Gulp</p>
       <h3>Pros</h3>
       <ul>
         <li>✅ Works on all UNIX based operating systems.</li>
